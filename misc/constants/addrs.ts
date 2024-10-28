@@ -120,6 +120,7 @@ const mainnetAddrs: CrocAddrs = {
     govern: emptryGovAddrs
 }*/ 
 
+
 const goerliAddrsDryRun: CrocAddrs = {
     dex: '0xAaAaAAAaA24eEeb8d57D431224f73832bC34f688',
     cold: '0x0b6CD0ECb176cb39Ad99B3A0E4294167a80B68a3',
@@ -145,12 +146,40 @@ const goerliAddrsDryRun: CrocAddrs = {
     }
 }
 
+
+// Mainnet
+const morphTestnetAddrs: CrocAddrs = {
+    dex: '',
+    cold: '',
+    warm: '',
+    long: '',
+    micro: '',
+    hot: '',
+    knockout: '',
+    koCross: '',
+    policy: '',
+    query: '',
+    impact: '',
+    shell: '',
+    policyShell: '',
+    deployer: '0x0be34F03aA29318EBa2f2b85ED3BF55862a0e4cB',
+    govern: {
+      multisigTreasury: '0x86D9709eF6614e3F10FEF0806C24d30368C8F0Ed',
+      multisigOps: '0xfDDb1a444D4C362c1c235426737206fb34575f8a',
+      multisigEmergency: '0xfDDb1a444D4C362c1c235426737206fb34575f8a',
+      timelockTreasury: '',
+      timelockOps: '',
+      timelockEmergency: ''
+    }
+  }
+
     
 
 export let CROC_ADDRS = {
     '0x1': mainnetAddrs,
     '0x5': goerliAddrsDryRun,
     'mock': mockAddrs,
+    '0xafa': morphTestnetAddrs
 }
 
 // Goerli

@@ -32,8 +32,10 @@ const mainnetParams: CrocPoolParams = {
 }
 
 const goerliDryRunParams = mainnetParams
+const morphTestnetParams = mainnetParams
 
 export const CROC_POOL_PARAMS = {
     '0x1': mainnetParams,
     '0x5': goerliDryRunParams,
+    '0xafa': morphTestnetParams
 }
