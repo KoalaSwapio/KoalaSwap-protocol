@@ -149,7 +149,7 @@ const goerliAddrsDryRun: CrocAddrs = {
 
 // Mainnet
 const morphTestnetAddrs: CrocAddrs = {
-    dex: '',
+    dex: '0xcd5f6Fa8d2f3DEAaf51b721dF0B109554D8853aF',
     cold: '',
     warm: '',
     long: '',
@@ -162,7 +162,7 @@ const morphTestnetAddrs: CrocAddrs = {
     impact: '',
     shell: '',
     policyShell: '',
-    deployer: '0x0be34F03aA29318EBa2f2b85ED3BF55862a0e4cB',
+    deployer: '0x30f85668C4b4C5e99Eb2B415CcEFab59228295bC',
     govern: {
       multisigTreasury: '0x86D9709eF6614e3F10FEF0806C24d30368C8F0Ed',
       multisigOps: '0xfDDb1a444D4C362c1c235426737206fb34575f8a',
