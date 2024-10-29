@@ -144,7 +144,7 @@ const goerliAddrsDryRun: CrocAddrs = {
   },
 };
 
-// Mainnet
+// Testnet
 const morphTestnetAddrs: CrocAddrs = {
   dex: "0xcd5f6Fa8d2f3DEAaf51b721dF0B109554D8853aF",
   cold: "0x6bd17F4e0a5FAD35FE067DDc9ED7E4236286C8a3",

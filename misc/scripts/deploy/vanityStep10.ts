@@ -13,7 +13,8 @@ const abi = new AbiCoder()
 async function install() {
     let { addrs } = initProvider()
 
-    const timeDelay = 2 * 24 * 3600 // Two days
+    // const timeDelay = 2 * 24 * 3600 // Two days
+    const timeDelay = 2 * 60 // Two minutes
     await opsTimelockSet(addrs, timeDelay, INIT_TIMELOCK_DELAY)
     await treasuryTimelockSet(addrs, timeDelay, INIT_TIMELOCK_DELAY)
     
