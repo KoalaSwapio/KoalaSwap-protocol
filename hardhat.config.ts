@@ -6,7 +6,9 @@ import "hardhat-typechain";
 import "@nomiclabs/hardhat-ethers";
 import "hardhat-contract-sizer";
 import "@nomicfoundation/hardhat-verify";
-import "dotenv/config";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 require("hardhat-storage-layout");
 require("solidity-coverage");
@@ -31,6 +33,12 @@ module.exports = {
     ],
     overrides: {},
   },
+  // typechain: {
+  //   outDir: 'typechain', // This matches the project structure
+  //   target: 'ethers-v5',
+  //   alwaysGenerateOverloads: false,
+  //   externalArtifacts: ['externalArtifacts/*.json'],
+  // },
 
   networks: {
     local: {
@@ -73,14 +81,17 @@ module.exports = {
       url: "https://api.avax-test.network/ext/bc/C/rpc",
       chainId: 43113,
     },
+
     morphTestnet: {
       url: process.env.MORPH_TESTNET_URL,
+      accounts: process.env.WALLET_KEY ? [process.env.WALLET_KEY] : [],
       chainId: 2810,
     },
-    morphMainnet: {
-      url: process.env.MORPH_MAINNET_URL,
-      chainId: 17000,
-    },
+  },
+  morphMainnet: {
+    url: process.env.MORPH_MAINNET_URL || "",
+    accounts: process.env.WALLET_KEY ? [process.env.WALLET_KEY] : [],
+    chainId: 17000,
   },
   etherscan: {
     apiKey: {

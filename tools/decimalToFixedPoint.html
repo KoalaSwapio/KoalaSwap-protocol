@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Price Converter</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            margin-top: 10px;
+            display: block;
+            font-weight: bold;
+            color: #555;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Price Converter</h2>
+        
+        <label for="weiInput">Enter Price in Wei:</label>
+        <input type="number" id="weiInput" placeholder="e.g., 2940000000000000">
+        <button onclick="convertToSqrtPrice()">Convert to Square Root Price</button>
+
+        <div class="result" id="sqrtPriceResult"></div>
+
+        <label for="sqrtPriceInput">Enter Square Root Price:</label>
+        <input type="number" id="sqrtPriceInput" placeholder="e.g., 1000215056249184435903024130">
+        <button onclick="convertToPrice()">Convert to Price in Wei</button>
+
+        <div class="result" id="priceResult"></div>
+
+        <div class="footer">Powered by passandscore</div>
+    </div>
+
+    <script>
+        const PRECISION = 100000000; // Fixed-point precision
+        const Q_64 = BigInt(Math.pow(2, 64)); // Q_64 constant
+
+        function toSqrtPrice(price) {
+            // Calculate the square root of the price in fixed-point representation
+            const sqrtFixed = BigInt(Math.round(Math.sqrt(price) * PRECISION));
+            return (sqrtFixed * Q_64) / BigInt(PRECISION);
+        }
+
+        function fromSqrtPrice(sqrtPrice) {
+            const PRECISION_18 = BigInt(1000000000000000000n); // Fixed-point precision (10^18)
+            // Ensure sqrtPrice is treated as a BigInt
+            const sqrtPriceBigInt = BigInt(sqrtPrice);
+            
+            // Calculate the root using fixed-point arithmetic
+            const root = (sqrtPriceBigInt * PRECISION_18) / Q_64;
+            
+            // Square the root and divide by PRECISION^2 to maintain precision
+            const price = (root * root) / (PRECISION_18 * PRECISION_18);
+            
+            return price;
+        }
+
+        function convertToSqrtPrice() {
+            const weiValue = document.getElementById('weiInput').value;
+            if (!weiValue || weiValue <= 0) {
+                alert("Please enter a valid price in wei.");
+                return;
+            }
+            const sqrtPriceValue = toSqrtPrice(weiValue);
+            document.getElementById('sqrtPriceResult').innerText = `Square Root Price: ${sqrtPriceValue.toString()}`;
+        }
+
+        function convertToPrice() {
+            let sqrtPriceValue = document.getElementById('sqrtPriceInput').value;
+
+            if (!sqrtPriceValue || sqrtPriceValue <= 0) {
+                alert("Please enter a valid square root price.");
+                return;
+            }
+            const priceValue = fromSqrtPrice(sqrtPriceValue);
+            
+            document.getElementById('priceResult').innerText = `Price in Wei: ${priceValue.toString()}`;
+        }
+    </script>
+
+</body>
+</html>
