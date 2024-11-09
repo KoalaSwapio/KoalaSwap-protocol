@@ -17,10 +17,13 @@ async function deploy() {
     console.log("Protocol Authority:", authority.address, "\n");
 
     const { dex } = await contractInstances(addrs.cold, addrs.dex);
-    const { usdc, weth } = await tokenInstances(tokens);
+    const { usdc, weth, dai, usdt, wbtc } = await tokenInstances(tokens);
 
     /// @dev see `makePoolFrom` from `helpers.ts` for more details
-    await makePoolFrom(dex, weth, usdc, CURRENT_PRICE);
+    // await makePoolFrom(dex, weth, usdc, CURRENT_PRICE); //! wrong token order
+    // await makePoolFrom(dex, weth, dai, CURRENT_PRICE);
+    await makePoolFrom(dex, wbtc, dai, CURRENT_PRICE);
+    // await makePoolFrom(dex, weth, btc, CURRENT_PRICE);
   } catch (error) {
     console.error(chalk.red("Error during pool deployment:", error));
     process.exit(1);

@@ -108,11 +108,12 @@ export async function makePoolFrom(
   price: number
 ) {
   try {
+    let initPrice;
     let baseDecs = await tokenX.decimals();
     let quoteDecs = await tokenY.decimals();
-    let deflator = Math.pow(10, baseDecs - quoteDecs);
-    let weiPrice = deflator * price;
-    let initWeiPrice;
+
+    // Calculate price ratio considering token decimals
+    let priceRatio = price * Math.pow(10, baseDecs - quoteDecs);
 
     // Order tokens by lexicographical order
     const { base, quote } = await orderTokens(tokenX, tokenY);
@@ -127,19 +128,20 @@ export async function makePoolFrom(
 
     // Initialize price based on token order
     addrLessThan(base.address, quote.address)
-      ? (initWeiPrice = weiPrice)
-      : (initWeiPrice = 1.0 / weiPrice);
+      ? (initPrice = priceRatio)
+      : (initPrice = 1.0 / priceRatio);
 
     // Confirmation details
     console.log(chalk.yellow("\n--- Pool Initialization Details ---"));
     console.log(chalk.blue("=== Pool Information ==="));
     console.log(`POOL_IDX:          ${POOL_IDX}`);
-    console.log(`Initial Wei Price: ${initWeiPrice}`);
-    console.log(`Sqrt Price:        ${toSqrtPrice(initWeiPrice)}\n`);
+    // console.log(`Deflator:          ${deflator}`);
+    console.log(`price Ratio:       ${initPrice}`);
+    console.log(`Sqrt Price:        ${toSqrtPrice(initPrice)}\n`);
     console.log(chalk.blue("=== Token Details ==="));
-    console.log(`Base Token Symbol: ${baseSymbol}`);
-    console.log(`Base Token Address: ${baseAddress}`);
-    console.log(`Quote Token Symbol: ${quoteSymbol}`);
+    console.log(`Base Token Symbol:   ${baseSymbol}`);
+    console.log(`Base Token Address:  ${baseAddress}`);
+    console.log(`Quote Token Symbol:  ${quoteSymbol}`);
     console.log(`Quote Token Address: ${quoteAddress}\n`);
 
     // User confirmation
@@ -171,7 +173,7 @@ export async function makePoolFrom(
     // Encode the initialization command
     const initPoolCmd = ethers.utils.defaultAbiCoder.encode(
       ["uint8", "address", "address", "uint256", "uint128"],
-      [71, baseAddress, quoteAddress, POOL_IDX, toSqrtPrice(initWeiPrice)]
+      [71, baseAddress, quoteAddress, POOL_IDX, toSqrtPrice(initPrice)]
     );
 
     // send the initialization command
@@ -183,13 +185,14 @@ export async function makePoolFrom(
     // Log the initialization details
     console.log(
       `Initializing ${baseSymbol}<->${quoteSymbol} pool with sqrtPrice: ${toSqrtPrice(
-        initWeiPrice
+        initPrice
       ).toString()}...\n`
     );
 
-    // Log the transaction details
-    console.log(chalk.blue("Transaction:", tx, "\n"));
     await tx.wait();
+
+    // Log the transaction details
+    console.log(chalk.blue("Transaction:", JSON.stringify(tx, null, 2), "\n"));
 
     console.log(chalk.green("Pool initialized successfully!"));
   } catch (error) {

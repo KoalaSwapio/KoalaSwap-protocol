@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sqrt Price Converter</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        h2 {
+            text-align: center;
+            color: #2d3748;
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #4a5568;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(to right, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            margin-top: 1rem;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .result {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: #f7fafc;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 500;
+            color: #2d3748;
+            word-break: break-all;
+        }
+
+        .divider {
+            margin: 2rem 0;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: #718096;
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 1.5rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            input, button {
+                padding: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Square Root Price Converter</h2>
+        
+        <div class="input-group">
+            <label for="priceInput">Enter Price</label>
+            <input type="number" id="priceInput" placeholder="e.g., 2940">
+        </div>
+
+        <div class="input-group">
+            <label for="baseDecimalsTo">Base Token Decimals</label>
+            <input type="number" id="baseDecimalsTo" placeholder="e.g., 18">
+        </div>
+
+        <button onclick="convertToSqrtPrice()">Convert to Square Root Price</button>
+        <div class="result" id="sqrtPriceResult"></div>
+
+        <div class="divider"></div>
+
+        <div class="input-group">
+            <label for="sqrtPriceInput">Enter Square Root Price</label>
+            <input type="number" id="sqrtPriceInput" placeholder="e.g., 1000215056306298522340">
+        </div>
+
+        <div class="input-group">
+            <label for="baseDecimalsFrom">Base Token Decimals</label>
+            <input type="number" id="baseDecimalsFrom" placeholder="e.g., 18">
+        </div>
+
+        <div class="input-group">
+            <label for="quoteDecimalsFrom">Quote Token Decimals</label>
+            <input type="number" id="quoteDecimalsFrom" placeholder="e.g., 6">
+        </div>
+
+        <button onclick="convertToPrice()">Convert to Price</button>
+        <div class="result" id="priceResult"></div>
+
+        <div class="footer">Powered by passandscore 😎</div>
+    </div>
+
+    <script>
+        const Q_64 = BigInt(2) ** BigInt(64);
+
+        function toSqrtPrice(price, baseDecs) {
+            try {
+                // Parse inputs
+                const priceNum = parseFloat(price);
+                const baseDecsNum = parseInt(baseDecs);
+                
+                if (isNaN(priceNum) || isNaN(baseDecsNum)) {
+                    throw new Error("Invalid input values");
+                }
+
+                // Calculate PRECISION correctly
+                const PRECISION = BigInt(10) ** BigInt(baseDecsNum);
+                console.log({priceNum, PRECISION: Number(PRECISION)});
+                
+                // Calculate the square root of the price in fixed-point representation
+                const sqrtFixed = Math.round(Math.sqrt(priceNum) * Number(PRECISION));
+                
+                // Convert to BigInt and perform the calculation
+                const result = BigInt(sqrtFixed) * Q_64 / BigInt(PRECISION);
+                
+                console.log({
+                    input: { price },
+                    calculations: {
+                        sqrtFixed,
+                        result: result.toString()
+                    }
+                });
+
+                return result;
+            } catch (error) {
+                console.error("Error in toSqrtPrice:", error);
+                throw error;
+            }
+        }
+
+        function fromSqrtPrice(sqrtPrice, baseDecs, quoteDecs) {
+            try {
+                // Calculate decimal difference and PRECISION
+                const decimalDiff = Math.abs(baseDecs - quoteDecs);
+                const PRECISION = BigInt(10) ** BigInt(decimalDiff);
+                
+                const sqrtPriceBigInt = BigInt(sqrtPrice);
+                
+                // Calculate the root using fixed-point arithmetic
+                const root = (sqrtPriceBigInt * PRECISION) / Q_64;
+                
+                // Square the root
+                const squared = root * root;
+                
+                // Convert to decimal representation
+                const price = Number(squared) / Number(PRECISION * PRECISION);
+                
+                // Format the result with calculated decimal places
+                const formattedPrice = price.toFixed(Math.abs(decimalDiff));
+                
+                return formattedPrice;
+            } catch (error) {
+                console.error("Error in fromSqrtPrice:", error);
+                throw error;
+            }
+        }
+
+        function convertToSqrtPrice() {
+            try {
+                const priceValue = document.getElementById('priceInput').value;
+                const baseDecimals = parseInt(document.getElementById('baseDecimalsTo').value);
+
+                if (!priceValue || priceValue <= 0 || isNaN(baseDecimals)) {
+                    alert("Please enter valid values for price and token decimals.");
+                    return;
+                }
+
+                const sqrtPriceValue = toSqrtPrice(priceValue, baseDecimals);
+                document.getElementById('sqrtPriceResult').innerText = 
+                    `Square Root Price: ${sqrtPriceValue.toString()}`;
+               
+            } catch (error) {
+                console.error("Error in conversion:", error);
+                alert("Error in conversion. Please check the console for details.");
+            }
+        }
+
+        function convertToPrice() {
+            try {
+                let sqrtPriceValue = document.getElementById('sqrtPriceInput').value;
+                const baseDecimals = parseInt(document.getElementById('baseDecimalsFrom').value);
+                const quoteDecimals = parseInt(document.getElementById('quoteDecimalsFrom').value);
+
+                if (!sqrtPriceValue || sqrtPriceValue <= 0 || 
+                    isNaN(baseDecimals) || isNaN(quoteDecimals)) {
+                    alert("Please enter valid values for square root price and token decimals.");
+                    return;
+                }
+
+                const priceValue = fromSqrtPrice(sqrtPriceValue, baseDecimals, quoteDecimals);
+                document.getElementById('priceResult').innerText = `Price: ${priceValue}`;
+                
+               
+            } catch (error) {
+                console.error("Error in conversion:", error);
+                alert("Error in conversion. Please check the console for details.");
+            }
+        }
+    </script>
+
+</body>
+</html>
