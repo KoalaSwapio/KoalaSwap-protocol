@@ -2,6 +2,7 @@ import { MockERC20 } from "../../../../typechain/MockERC20";
 import { ethers } from "hardhat";
 import { Token } from "../../../constants/tokens";
 import { CrocSwapDex } from "../../../../typechain";
+import { BigNumber, ContractTransaction } from "ethers";
 
 /**
  * @title Token Instance Helper
@@ -33,3 +34,12 @@ export async function dexInstance(dexAddr: string) {
 
   return { dex };
 }
+
+
+export async function waitMine (tx: Promise<ContractTransaction>): Promise<ContractTransaction> {
+  await (await tx).wait()
+  return tx
+}
+
+export let override = { gasPrice: BigNumber.from("10").pow(9).mul(25), gasLimit: 1000000 }
+ 
