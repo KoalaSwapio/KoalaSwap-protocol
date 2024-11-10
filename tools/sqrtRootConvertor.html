@@ -210,7 +210,9 @@
         function fromSqrtPrice(sqrtPrice, baseDecs, quoteDecs) {
             try {
                 // Calculate decimal difference and PRECISION
-                const decimalDiff = Math.abs(baseDecs - quoteDecs);
+                let decimalDiff = Math.abs(baseDecs - quoteDecs);
+                if(decimalDiff === 0) decimalDiff = baseDecs;
+                
                 const PRECISION = BigInt(10) ** BigInt(decimalDiff);
                 
                 const sqrtPriceBigInt = BigInt(sqrtPrice);

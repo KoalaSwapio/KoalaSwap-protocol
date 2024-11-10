@@ -2,7 +2,7 @@ import { ethers } from "hardhat";
 import { initProvider } from "../../../libs/chain";
 import { contractInstances, makePoolFrom, tokenInstances } from "./helpers";
 import { tokens } from "../../../constants/tokens";
-import { CURRENT_PRICE } from "./config";
+import { CURRENT_PRICE, ZER0_ADDRESS } from "./config";
 import chalk from "chalk";
 
 // Example: npx hardhat run --network morphTestnet misc/scripts/additional/pools/deploy.ts
@@ -22,8 +22,9 @@ async function deploy() {
     /// @dev see `makePoolFrom` from `helpers.ts` for more details
     // await makePoolFrom(dex, weth, usdc, CURRENT_PRICE); //! wrong token order
     // await makePoolFrom(dex, weth, dai, CURRENT_PRICE);
-    await makePoolFrom(dex, wbtc, dai, CURRENT_PRICE);
+    // await makePoolFrom(dex, wbtc, dai, CURRENT_PRICE);
     // await makePoolFrom(dex, weth, btc, CURRENT_PRICE);
+    await makePoolFrom(dex, ZER0_ADDRESS, usdt, CURRENT_PRICE, true);
   } catch (error) {
     console.error(chalk.red("Error during pool deployment:", error));
     process.exit(1);

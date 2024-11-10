@@ -94,107 +94,85 @@ export function toSqrtPrice(price: number) {
   return BigNumber.from(sqrtFixed).mul(Q_64).div(PRECISION);
 }
 
+
 /**
  * @notice Initializes a pool
  * @param dex - The CrocSwapDex instance
  * @param tokenX - The first token
  * @param tokenY - The second token
  * @param price - The price to initialize the pool with. Use current price of tokenX. (No decimals)
+ * @param isNativeEth - Whether the first token is native ETH
  */
 export async function makePoolFrom(
   dex: CrocSwapDex,
-  tokenX: MockERC20,
+  tokenX: MockERC20 | string,
   tokenY: MockERC20,
-  price: number
+  price: number,
+  isNativeEth: boolean = false
 ) {
   try {
-    let initPrice;
-    let baseDecs = await tokenX.decimals();
-    let quoteDecs = await tokenY.decimals();
+    // Handle token contracts and decimals
+    const tokenXContract = typeof tokenX === 'string' 
+      ? (await ethers.getContractFactory("MockERC20")).attach(tokenX)
+      : tokenX;
+    
+    const baseDecs = isNativeEth ? 18 : await tokenXContract.decimals();
+    const quoteDecs = await tokenY.decimals();
+    const priceRatio = price * Math.pow(10, baseDecs - quoteDecs);
 
-    // Calculate price ratio considering token decimals
-    let priceRatio = price * Math.pow(10, baseDecs - quoteDecs);
-
-    // Order tokens by lexicographical order
-    const { base, quote } = await orderTokens(tokenX, tokenY);
-
-    // Symbols
-    const baseSymbol = await tokenX.symbol();
+    // Handle token ordering and symbols
+    const baseAddress = isNativeEth ? ethers.constants.AddressZero : tokenXContract.address;
+    const quoteAddress = tokenY.address;
+    const baseSymbol = isNativeEth ? "ETH" : await tokenXContract.symbol();
     const quoteSymbol = await tokenY.symbol();
 
-    // Addresses
-    const baseAddress = base.address;
-    const quoteAddress = quote.address;
+    // Calculate final price based on address ordering
+    const initPrice = addrLessThan(baseAddress, quoteAddress) ? priceRatio : 1.0 / priceRatio;
+    const sqrtPrice = toSqrtPrice(initPrice);
 
-    // Initialize price based on token order
-    addrLessThan(base.address, quote.address)
-      ? (initPrice = priceRatio)
-      : (initPrice = 1.0 / priceRatio);
-
-    // Confirmation details
+    // Display pool details
     console.log(chalk.yellow("\n--- Pool Initialization Details ---"));
     console.log(chalk.blue("=== Pool Information ==="));
-    console.log(`POOL_IDX:          ${POOL_IDX}`);
-    // console.log(`Deflator:          ${deflator}`);
-    console.log(`price Ratio:       ${initPrice}`);
-    console.log(`Sqrt Price:        ${toSqrtPrice(initPrice)}\n`);
+    console.log(`POOL_IDX: ${POOL_IDX}`);
+    console.log(`Price Ratio: ${initPrice}`);
+    console.log(`Sqrt Price: ${sqrtPrice}\n`);
     console.log(chalk.blue("=== Token Details ==="));
-    console.log(`Base Token Symbol:   ${baseSymbol}`);
-    console.log(`Base Token Address:  ${baseAddress}`);
-    console.log(`Quote Token Symbol:  ${quoteSymbol}`);
-    console.log(`Quote Token Address: ${quoteAddress}\n`);
-
-    // User confirmation
-    const readline = require("readline").createInterface({
-      input: process.stdin,
-      output: process.stdout,
-    });
-
-    // Allow the user to confirm the details
-    const getUserConfirmation = () => {
-      return new Promise((resolve) => {
-        readline.question(
-          "Is the above data correct? (yes/no): ",
-          (answer: string) => {
-            readline.close();
-            resolve(answer.toLowerCase() === "yes");
-          }
-        );
-      });
-    };
+    console.log(`Base Token: ${baseSymbol} (${baseAddress})`);
+    console.log(`Quote Token: ${quoteSymbol} (${quoteAddress})\n`);
 
     // Get user confirmation
-    const isConfirmed = await getUserConfirmation();
+    const isConfirmed = await new Promise<boolean>((resolve) => {
+      const readline = require("readline").createInterface({
+        input: process.stdin,
+        output: process.stdout,
+      });
+      readline.question("Is the above data correct? (yes/no): ", (answer: string) => {
+        readline.close();
+        resolve(answer.toLowerCase() === "yes");
+      });
+    });
+
     if (!isConfirmed) {
-      console.log(chalk.red("\n", "Operation cancelled by the user."));
+      console.log(chalk.red("\nOperation cancelled by the user."));
       return;
     }
 
-    // Encode the initialization command
+    // Initialize pool
     const initPoolCmd = ethers.utils.defaultAbiCoder.encode(
       ["uint8", "address", "address", "uint256", "uint128"],
-      [71, baseAddress, quoteAddress, POOL_IDX, toSqrtPrice(initPrice)]
+      [71, baseAddress, quoteAddress, POOL_IDX, sqrtPrice]
     );
 
-    // send the initialization command
+    console.log(`\nInitializing ${baseSymbol}<->${quoteSymbol} pool...`);
+    
     const tx = await dex.userCmd(COLD_PROXY_IDX, initPoolCmd, {
-      value: ethers.BigNumber.from(10).pow(15),
-      gasLimit: await dex.estimateGas.userCmd(COLD_PROXY_IDX, initPoolCmd),
+      value: ethers.utils.parseEther("0.00001"),
+      gasLimit: 6000000,
     });
 
-    // Log the initialization details
-    console.log(
-      `Initializing ${baseSymbol}<->${quoteSymbol} pool with sqrtPrice: ${toSqrtPrice(
-        initPrice
-      ).toString()}...\n`
-    );
-
     await tx.wait();
-
-    // Log the transaction details
-    console.log(chalk.blue("Transaction:", JSON.stringify(tx, null, 2), "\n"));
-
     console.log(chalk.green("Pool initialized successfully!"));
+    
   } catch (error) {
     console.error(chalk.red("Error initializing pool:", error));
     throw error;
