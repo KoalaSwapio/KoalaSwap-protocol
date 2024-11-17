@@ -1,4 +1,3 @@
-import { ethers } from "hardhat";
 
 // Convention is to use empty string for pre-deployed contract
 export interface CrocAddrs {
@@ -180,7 +179,7 @@ export let CROC_ADDRS = {
 // Goerli
 export let TOKEN_ADDRS = {
   "0x5": {
-    eth: ethers.constants.AddressZero,
+    eth: "0x0000000000000000000000000000000000000000",
     dai: "0xdc31Ee1784292379Fbb2964b3B9C4124D8F89C60",
     usdc: "0xD87Ba7A50B2E7E660f678A895E4B72E7CB4CCd9C",
   },

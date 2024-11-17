@@ -944,6 +944,11 @@
   resolved "https://registry.npmjs.org/@types/chai/-/chai-4.2.21.tgz"
   integrity sha512-yd+9qKmJxm496BOV9CMNaey8TWsikaZOwMRwPHQIjcOJM9oV+fi9ZMNw3JsVnbEEbo2gRTDnGEBv8pjyn67hNg==
 
+"@types/command-line-args@^5.2.3":
+  version "5.2.3"
+  resolved "https://registry.npmjs.org/@types/command-line-args/-/command-line-args-5.2.3.tgz"
+  integrity sha512-uv0aG6R0Y8WHZLTamZwtfsDLVRnOa+n+n5rEvFWL5Na5gZ8V2Teab/duDPFzIIIhs9qizDpcavCusCLJZu62Kw==
+
 "@types/glob@^7.1.1":
   version "7.2.0"
   resolved "https://registry.npmjs.org/@types/glob/-/glob-7.2.0.tgz"
@@ -1330,10 +1335,17 @@ arr-union@^3.1.0:
   resolved "https://registry.npmjs.org/arr-union/-/arr-union-3.1.0.tgz"
   integrity sha1-45sJrqne+Gao8gbiiK9jkZuuOcQ=
 
-array-back@^1.0.3, array-back@^1.0.4:
+array-back@^1.0.3:
   version "1.0.4"
   resolved "https://registry.npmjs.org/array-back/-/array-back-1.0.4.tgz"
-  integrity sha1-ZEun8JX3/898Q7Xw3DnTwfA8Bjs=
+  integrity sha512-1WxbZvrmyhkNoeYcizokbmh5oiOCIfyvGtcqbK3Ls1v1fKcquzxnQSceOx6tzq7jmai2kFLWIpGND2cLhH6TPw==
+  dependencies:
+    typical "^2.6.0"
+
+array-back@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.npmjs.org/array-back/-/array-back-1.0.4.tgz"
+  integrity sha512-1WxbZvrmyhkNoeYcizokbmh5oiOCIfyvGtcqbK3Ls1v1fKcquzxnQSceOx6tzq7jmai2kFLWIpGND2cLhH6TPw==
   dependencies:
     typical "^2.6.0"
 
@@ -1343,6 +1355,11 @@ array-back@^2.0.0:
   integrity sha512-eJv4pLLufP3g5kcZry0j6WXpIbzYw9GUB4mVJZno9wfwiBxbizTnHCw3VJb07cBihbFX48Y7oSrW9y+gt4glyw==
   dependencies:
     typical "^2.6.1"
+
+array-back@^6.2.2:
+  version "6.2.2"
+  resolved "https://registry.npmjs.org/array-back/-/array-back-6.2.2.tgz"
+  integrity sha512-gUAZ7HPyb4SJczXAMUXMGAvI976JoK3qEx9v1FTmeYuJj0IBiaKttG1ydtGKdkfqWkIkouke7nG8ufGy77+Cvw==
 
 array-flatten@1.1.1:
   version "1.1.1"
@@ -2666,6 +2683,16 @@ command-line-args@^4.0.7:
     array-back "^2.0.0"
     find-replace "^1.0.3"
     typical "^2.6.1"
+
+command-line-args@^6.0.1:
+  version "6.0.1"
+  resolved "https://registry.npmjs.org/command-line-args/-/command-line-args-6.0.1.tgz"
+  integrity sha512-Jr3eByUjqyK0qd8W0SGFW1nZwqCaNCtbXjRo2cRJC1OYxWl3MZ5t1US3jq+cO4sPavqgw4l9BMGX0CBe+trepg==
+  dependencies:
+    array-back "^6.2.2"
+    find-replace "^5.0.2"
+    lodash.camelcase "^4.3.0"
+    typical "^7.2.0"
 
 commander@~2.9.0:
   version "2.9.0"
@@ -4150,10 +4177,15 @@ finalhandler@~1.1.2:
 find-replace@^1.0.3:
   version "1.0.3"
   resolved "https://registry.npmjs.org/find-replace/-/find-replace-1.0.3.tgz"
-  integrity sha1-uI5zZNLZyVlVnziMZmcNYTBEH6A=
+  integrity sha512-KrUnjzDCD9426YnCP56zGYy/eieTnhtK6Vn++j+JJzmlsWWwEkDnsyVF575spT6HJ6Ow9tlbT3TQTDsa+O4UWA==
   dependencies:
     array-back "^1.0.4"
     test-value "^2.1.0"
+
+find-replace@^5.0.2:
+  version "5.0.2"
+  resolved "https://registry.npmjs.org/find-replace/-/find-replace-5.0.2.tgz"
+  integrity sha512-Y45BAiE3mz2QsrN2fb5QEtO4qb44NcS7en/0y9PEVsg351HsLeVclP8QPMH79Le9sH3rs5RSwJu99W0WPZO43Q==
 
 find-up@^1.0.0:
   version "1.1.2"
@@ -5942,6 +5974,11 @@ lodash.assign@^4.0.3, lodash.assign@^4.0.6:
   version "4.2.0"
   resolved "https://registry.npmjs.org/lodash.assign/-/lodash.assign-4.2.0.tgz"
   integrity sha1-DZnzzNem0mHRm9rrkkUAXShYCOc=
+
+lodash.camelcase@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.npmjs.org/lodash.camelcase/-/lodash.camelcase-4.3.0.tgz"
+  integrity sha512-TwuEnCnxbc3rAvhf/LbG7tJUDzhqXyFnv3dtzLOPgCG/hODL7WFnsbwktkD7yUV0RrreP/l1PALq/YSg6VvjlA==
 
 lodash.clonedeep@^4.5.0:
   version "4.5.0"
@@ -8569,7 +8606,7 @@ temp@~0.4.0:
 test-value@^2.1.0:
   version "2.1.0"
   resolved "https://registry.npmjs.org/test-value/-/test-value-2.1.0.tgz"
-  integrity sha1-Edpv9nDzRxpztiXKTz/c97t0gpE=
+  integrity sha512-+1epbAxtKeXttkGFMTX9H42oqzOTufR1ceCF+GYA5aOmvaPq9wd4PUS8329fn2RRLGNeUkgRLnVpycjx8DsO2w==
   dependencies:
     array-back "^1.0.3"
     typical "^2.6.0"
@@ -8869,7 +8906,12 @@ typewiselite@~1.0.0:
 typical@^2.6.0, typical@^2.6.1:
   version "2.6.1"
   resolved "https://registry.npmjs.org/typical/-/typical-2.6.1.tgz"
-  integrity sha1-XAgOXWYcu+OCWdLnCjxyU+hziB0=
+  integrity sha512-ofhi8kjIje6npGozTip9Fr8iecmYfEbS06i0JnIg+rh51KakryWF4+jX8lLKZVhy6N+ID45WYSFCxPOdTWCzNg==
+
+typical@^7.2.0:
+  version "7.3.0"
+  resolved "https://registry.npmjs.org/typical/-/typical-7.3.0.tgz"
+  integrity sha512-ya4mg/30vm+DOWfBg4YK3j2WD6TWtRkCbasOJr40CseYENzCUby/7rIvXA99JGsQHeNxLbnXdyLLxKSv3tauFw==
 
 u2f-api@0.2.7:
   version "0.2.7"

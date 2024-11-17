@@ -2,7 +2,6 @@ import { BigNumber, BytesLike, ContractFactory, ethers, VoidSigner } from "ether
 import { TimelockAccepts, CrocPolicy, CrocSwapDex } from "../../typechain"
 import { BOOT_PROXY_IDX, COLD_PROXY_IDX, CrocAddrs, CrocGovAddrs, FLAG_CROSS_PROXY_IDX, KNOCKOUT_LP_PROXY_IDX, LONG_PROXY_IDX, LP_PROXY_IDX, MICRO_PROXY_IDX, SAFE_MODE_PROXY_PATH, SWAP_PROXY_IDX } from "../constants/addrs"
 import { refContract } from "./chain"
-import { ethers as hreEthers } from 'hardhat';
 
 interface TimelockCalls {
     timelockAddr: string

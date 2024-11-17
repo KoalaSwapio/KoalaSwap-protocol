@@ -15,6 +15,7 @@
     "@tenderly/hardhat-tenderly": "^1.0.12",
     "@typechain/ethers-v5": "^4.0.0",
     "@types/chai": "^4.2.18",
+    "@types/command-line-args": "^5.2.3",
     "@types/mocha": "^8.2.2",
     "@types/node": "^15.6.1",
     "chai": "^4.3.4",
@@ -24,7 +25,6 @@
     "hardhat-contract-sizer": "^2.1.0",
     "hardhat-deploy": "^0.9.1",
     "hardhat-deploy-ethers": "^0.3.0-beta.10",
-    "hardhat-ethers": "^1.0.1",
     "hardhat-storage-layout": "^0.1.6",
     "hardhat-typechain": "^0.3.5",
     "solidity-coverage": "^0.7.20",
@@ -39,7 +39,9 @@
     "@openzeppelin/contracts": "^4.9.0",
     "@rari-capital/solmate": "^6.4.0",
     "chalk": "^4.1.2",
+    "command-line-args": "^6.0.1",
     "dotenv": "^16.4.5",
+    "hardhat-ethers": "^1.0.1",
     "solidity-code-metrics": "^0.0.19"
   }
 }
