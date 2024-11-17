@@ -12,10 +12,17 @@ CREATE2_SALTS.set(
   "0xaa648ca9a669467563048f9854d0c61d261957924a3753296908131cee781714"
 );
 
-// Morph Deployer
+/**
+ * @title CREATE2 Salt Entry
+ * @notice ChainId: 0xafa
+ * @dev Purpose: CREATE2 salt for deterministic CrocDeployer address
+ * @dev Generated: 2024-11-17T12:22:47.734Z
+ * @param Key Deployer address used to generate salt
+ * @param Value keccak256 hash of the deployer address
+ */
 CREATE2_SALTS.set(
-  "0x30f85668C4b4C5e99Eb2B415CcEFab59228295bC".toLowerCase(),
-  "0x81f25193de6472fb1147899f43978c0afc7306911d5ce533dfeb9f6f9d75b4f0"
+  "0xdbec288199e50cf0c9ebeb2f3035c9358aaec16f",
+  "0x261099080c2043154e6be67071ca795b2630f231a8229a5de789af0051819c6c"         
 );
 
 export function mapSalt(deployerAddr: string): BigNumber {
