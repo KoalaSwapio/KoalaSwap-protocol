@@ -16,7 +16,7 @@ const nameAbi = ["function name() view returns (string)"];
 
 function getExplorerUrl(chainId: keyof typeof CROC_ADDRS, address: string) {
     switch (chainId) {
-        case '0xafa': return `https://explorer.morphl2.io/address/${address}`
+        case '0xafa': return `https://explorer-holesky.morphl2.io/address/${address}`
         default: throw new Error(`Unsupported chainId: ${chainId}`)
     }
 }

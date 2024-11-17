@@ -13,7 +13,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // Import tasks
-import "./misc/scripts/cmds";
+import "./misc/scripts";
 
 module.exports = {
   solidity: {
