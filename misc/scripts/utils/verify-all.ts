@@ -163,9 +163,9 @@ task("verify-all", "Verify all contracts")
   .addOptionalParam("delay", "Timelock delay in seconds", "172800")
   .addOptionalParam("safemode", "SafeMode contract address")
   .setAction(async (taskArgs, hre: HardhatRuntimeEnvironment) => {
-    console.log("Starting contract verification...");
-    console.log(`Chain ID: ${process.env.CHAIN_ID}`);
-    console.log(`Timelock Delay: ${taskArgs.delay} seconds`);
+    console.log(`\nStarting contract verification...`);
+    console.log(chalk.cyan(`Chain ID: ${process.env.CHAIN_ID}`));
+    console.log(chalk.cyan(`Timelock Delay: ${taskArgs.delay} seconds`));
     if (taskArgs.safemode) {
       console.log(`SafeMode Address: ${taskArgs.safemode}`);
     }
@@ -185,7 +185,7 @@ task("verify-all", "Verify all contracts")
       try {
         // Skip if address is empty string
         if (!config.address || config.address === "") {
-          console.log(`⚠️ Skipping ${name} - No address configured`);
+          console.log(`\n⚠️ Skipping ${name} - No address configured\n`);
           continue;
         }
 
@@ -241,7 +241,7 @@ task("verify-contract", "Verify a specific contract")
 
     try {
       if (!config.address || config.address === "") {
-        console.log(`⚠️ Skipping ${taskArgs.name} - No address configured`);
+        console.log(`\n⚠️ Skipping ${name} - No address configured\n`);
         return;
       }
 
