@@ -11,7 +11,7 @@ dotenv.config();
 
 async function main() {
   // Verify environment variables
-  if (!process.env.MORPH_TESTNET_URL) {
+  if (!process.env.RPC_URL) {
     throw new Error("RPC not found in environment variables");
   }
 
@@ -22,7 +22,7 @@ async function main() {
 
   // Connect to Base mainnet with explicit network configuration
   const provider = new ethers.providers.JsonRpcProvider(
-    process.env.MORPH_TESTNET_URL,
+    process.env.RPC_URL,
     {
       name: 'morphTestnet',
       chainId: 2810

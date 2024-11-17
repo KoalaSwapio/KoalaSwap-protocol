@@ -2,6 +2,7 @@ import { BigNumber, BytesLike, ContractFactory, ethers, VoidSigner } from "ether
 import { TimelockAccepts, CrocPolicy, CrocSwapDex } from "../../typechain"
 import { BOOT_PROXY_IDX, COLD_PROXY_IDX, CrocAddrs, CrocGovAddrs, FLAG_CROSS_PROXY_IDX, KNOCKOUT_LP_PROXY_IDX, LONG_PROXY_IDX, LP_PROXY_IDX, MICRO_PROXY_IDX, SAFE_MODE_PROXY_PATH, SWAP_PROXY_IDX } from "../constants/addrs"
 import { refContract } from "./chain"
+import chalk from "chalk"
 
 interface TimelockCalls {
     timelockAddr: string
@@ -107,20 +108,20 @@ async function timelockDelaySet (multisigAddr: string,
         oldDelay)
         
     console.log("----")
-    console.log("Presenting instructions for setting timelock delay")
+    console.log(chalk.bold(chalk.yellow("Presenting instructions for setting timelock delay")))
     console.log()
     console.log("Description: Change update timelock " + tag)
     console.log(`Execution instructions for updating timelock delay`)
     console.log()
-    console.log(`Step 1: Use the Gnosis Safe at ${multisigAddr}`)
+    console.log(chalk.blue(`Step 1: Use the Gnosis Safe at ${multisigAddr}`))
     console.log(`Transaction to timelock contract at ${timelockAddr}`)
     console.log(`(Message value: 0)`)
     console.log(`With the following calldata: `)
     console.log(timelockCalls.scheduleCalldata)
 
     console.log()
-    console.log(`Step 2: Wait at least ${timelockCalls.delay}`)
-    console.log(`Use same Gnosis Safe at ${multisigAddr}`)
+    console.log(chalk.blue(`Step 2: Wait at least ${timelockCalls.delay} seconds`))
+    console.log(chalk.blue(`Use same Gnosis Safe at ${multisigAddr}`))
     console.log(`Transaction to timelock contract at ${timelockCalls.timelockAddr}`)
     console.log(`(Message value: 0)`)
     console.log(`With the following calldata: `)
@@ -130,7 +131,7 @@ async function timelockDelaySet (multisigAddr: string,
 
 export function printResolution (res: GovernanceResolution, tag: string): GovernanceResolution {
     console.log("-----")
-    console.log("Presenting instructions for governance resolution", res)
+    console.log(chalk.bold(chalk.yellow(`Presenting instructions for governance resolution ${res.resolutionType}`)))
     console.log()
     console.log("Description:", tag)
     console.log(`Execution instructions for ${res.resolutionType} resolution`)
@@ -138,14 +139,14 @@ export function printResolution (res: GovernanceResolution, tag: string): Govern
     console.log(`Will execute a protocolCmd() call on CrocSwapDex contract at ${res.dexContract}`)
     console.log("protocolCmd() will be called with args: ", res.protocolCmd)
     console.log()
-    console.log(`Step 1: Use the Gnosis Safe at ${res.multisigOrigin}`)
+    console.log(chalk.blue(`Step 1: Use the Gnosis Safe at ${res.multisigOrigin}`))
     console.log(`Transaction to timelock contract at ${res.timelockCall.timelockAddr}`)
     console.log(`(Message value: 0)`)
     console.log(`With the following calldata: `)
     console.log(res.timelockCall.scheduleCalldata)
     console.log()
-    console.log(`Step 2: Wait at least ${res.timelockCall.delay}`)
-    console.log(`Use same Gnosis Safe at ${res.multisigOrigin}`)
+    console.log(chalk.blue(`Step 2: Wait at least ${res.timelockCall.delay} seconds`))
+    console.log(chalk.blue(`Use same Gnosis Safe at ${res.multisigOrigin}`))
     console.log(`Transaction to timelock contract at ${res.timelockCall.timelockAddr}`)
     console.log(`(Message value: 0)`)
     console.log(`With the following calldata: `)

@@ -41,12 +41,12 @@ module.exports = {
       chainId: 31337,
     },
     morphTestnet: {
-      url: process.env.MORPH_TESTNET_URL,
+      url: process.env.RPC_URL,
       accounts: process.env.WALLET_KEY ? [process.env.WALLET_KEY] : [],
       chainId: 2810,
     },
     morphMainnet: {
-      url: process.env.MORPH_MAINNET_URL || "",
+      url: process.env.RPC_URL || "",
       accounts: process.env.WALLET_KEY ? [process.env.WALLET_KEY] : [],
       chainId: 17000,
     },
