@@ -44,7 +44,7 @@
  * - Encoded calldata ready for multisig use
  *
  * Example usage:
- * 
+ *
  * const resolution = {
  *   resolutionType: "treasury",
  *   dexContract: "0x...",
@@ -57,8 +57,14 @@
  *     execCalldata: "0x..."
  *   }
  * };
- * 
- * treasuryResolution(addrs, resolution, 30, "Install Warm path sidecar");
+ *
+ * Example usage:
+ *
+ * # Installs WarmPath proxy through treasury resolution on local network
+ * npx hardhat run scripts/deploy/vanityStep8.ts --network localhost
+ *
+ * # Installs WarmPath proxy through treasury resolution on mainnet
+ * npx hardhat run scripts/deploy/vanityStep8.ts --network mainnet
  *
  */
 
@@ -72,7 +78,7 @@ let cmd;
 
 /**
  * @notice Installs WarmPath proxy through treasury resolution
- * 
+ *
  * Technical Details:
  * ----------------
  * 1. Uses protocol command 21 for proxy installation

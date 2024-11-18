@@ -20,25 +20,26 @@ async function deploy() {
     const { dai, usdc, weth, wbtc, usdt } = await tokenInstances(tokens);
     
     const approvalAmount = ethers.constants.MaxUint256;
+    const gasLimit = 10000000;
 
     console.log(`Approving dai for dex...`);
-    tx = await dai.approve(dex.address, approvalAmount);
+    tx = await dai.approve(dex.address, approvalAmount, { gasLimit });
     await tx.wait();
 
     console.log(`Approving usdc for dex...`);
-    tx = await usdc.approve(dex.address, approvalAmount);
+    tx = await usdc.approve(dex.address, approvalAmount, { gasLimit });
     await tx.wait();
 
     console.log(`Approving usdt for dex...`);
-    tx = await usdt.approve(dex.address, approvalAmount);
+    tx = await usdt.approve(dex.address, approvalAmount, { gasLimit });
     await tx.wait();
 
     console.log(`Approving weth for dex...`);
-    tx = await weth.approve(dex.address, approvalAmount);
+    tx = await weth.approve(dex.address, approvalAmount, { gasLimit });
     await tx.wait();
 
     console.log(`Approving wbtc for dex...`);
-    tx = await wbtc.approve(dex.address, approvalAmount);
+    tx = await wbtc.approve(dex.address, approvalAmount, { gasLimit });
     await tx.wait();
 
     console.log("All approvals completed successfully!");
